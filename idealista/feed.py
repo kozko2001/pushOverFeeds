@@ -89,14 +89,15 @@ message = """
         print_pisos(pisos_nous), print_pisos(pisos_esborrats))
 to = ["elisabethlo85@gmail.com" , "kozko2001@gmail.com"]
 
-if len(pisos_nous) > 0 or len(pisos_esborrats) > 0 or len(pisos_diff_preu) > 0:
-    mail.sendMail(to, "idealista feed",
-            message.encode("utf-8"))
+if len(pisos_nous) > 0 or len(pisos_esborrats) > 0 or len(pisos_diff_preu) > 0 : 
+    mail.sendMail(to, "idealista feed", message.encode("utf-8"))
 
 if len(pisos_nous) > 0:
     db.pisos.insert(pisos_nous)
 if len(pisos_esborrats) > 0:
-    db.pisos.remove( map( lambda p: {"key": p["key"]}, pisos_esborrats))
+    keys = map( lambda p: {"key": p["key"]}, pisos_esborrats)
+    for key in keys:
+        db.pisos.remove( key ) 
 if len(pisos_diff_preu) > 0:
     pisos = map( lambda (d,r) : r , pisos_diff_preu)
     for pis in pisos:
